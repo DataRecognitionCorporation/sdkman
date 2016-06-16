@@ -1,3 +1,7 @@
-gvm_auto_answer=true
-gvm_auto_selfupdate=false
-gvm_install=Y
+sdkman_auto_answer=true
+sdkman_auto_selfupdate=false
+# disables SSL certificate verification
+sdkman_insecure_ssl=true
+# configure curl timeouts
+sdkman_curl_connect_timeout=5
+sdkman_curl_max_time=4
