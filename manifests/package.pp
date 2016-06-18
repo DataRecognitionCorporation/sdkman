@@ -56,7 +56,7 @@ define sdkman::package (
    if $ensure == present and $is_default {
       exec {"sdk default $package_name $version" :
          environment => $sdkman::base_env,
-         command     => "$sdkman::user_home/.sdkman/bin/sdkman_default_${package_name}_${version}.sh",
+         command     => "bash -c '$sdkman_init && sdk default $package_name $version'",
          cwd         => $sdkman::user_home,
          user        => $sdkman::owner,
          group       => $sdkman::group,
