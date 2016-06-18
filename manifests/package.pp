@@ -40,7 +40,6 @@ define sdkman::package (
 
    exec { "sdk $sdkman_operation $package_name $version" :
       environment => $sdkman::base_env,
-      #command    => "$sdkman::user_home/.sdkman/bin/sdkman_${package_name}_${version}.sh",
       command     => "bash -c '$sdkman_init && sdk $sdkman_operation $package_name $version $sdkman::user_home/.sdkman/candidates'",
       unless      => $sdkman_operation_unless,
       cwd         => $sdkman::user_home,
@@ -55,11 +54,9 @@ define sdkman::package (
 
    
    if $ensure == present and $is_default {
-
       exec {"sdk default $package_name $version" :
          environment => $sdkman::base_env,
-         #command    => "$sdkman::user_home/.sdkman/bin/sdkman_default_${package_name}_${version}.sh",
-         command     => "bash -c '$sdkman_init && sdk default $package_name $version'",
+         command     => "$sdkman::user_home/.sdkman/bin/sdkman_default_${package_name}_${version}.sh",
          cwd         => $sdkman::user_home,
          user        => $sdkman::owner,
          group       => $sdkman::group,
@@ -67,7 +64,8 @@ define sdkman::package (
          logoutput   => true,
          require     => Exec["sdk install $package_name $version"],
          unless      => "test \"$version\" = \$(find $user_home/.sdkman/candidates/$package_name -type l -printf '%p -> %l\\n'| awk '{print \$3}' | awk -F'/' '{print \$NF}')",
-         timeout     => $timeout
+         timeout     => $timeout,
+         provider    => shell,
       }
 
    }
