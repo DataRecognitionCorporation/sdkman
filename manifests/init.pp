@@ -23,7 +23,8 @@ class sdkman (
     $homedir      = '',
     $java_home    = '',
     $sh           = '/bin/bash',
-    $package_hash = {}
+    $package_hash = {},
+    $sdkman_url    = 'http://get.sdkman.io'
 ) {
 
     validate_hash($package_hash)
@@ -47,7 +48,7 @@ class sdkman (
         default => [$home_env, "JAVA_HOME=$java_home"]
     }
 
-    wget::fetch {'http://get.sdkman.io':
+    wget::fetch {$sdkman_url:
       destination => "/tmp/sdkman-install.sh",
       verbose     => true,
       execuser    => $owner,
